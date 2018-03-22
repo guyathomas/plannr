@@ -5,14 +5,17 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
-import createReducer from './reducers';
+import { createEpicMiddleware } from 'redux-observable';
+import createReducer, { rootEpic } from './reducers';
 
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
-  // 1. sagaMiddleware: Makes redux-sagas work
+  // 1. epicMiddleware: Makes redux-observables work
   // 2. routerMiddleware: Syncs the location/URL path to the state
+  const epicMiddleware = createEpicMiddleware(rootEpic);
   const middlewares = [
+    epicMiddleware,
     routerMiddleware(history),
   ];
 

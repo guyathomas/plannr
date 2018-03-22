@@ -2,6 +2,7 @@
  * Combine all reducers in this file and export the combined reducers.
  */
 
+import { combineEpics } from 'redux-observable';
 import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -35,6 +36,9 @@ function routeReducer(state = routeInitialState, action) {
       return state;
   }
 }
+
+export const rootEpic = combineEpics(
+);
 
 /**
  * Creates the main reducer with the dynamically injected ones
