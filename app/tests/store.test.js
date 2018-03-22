@@ -17,11 +17,11 @@ describe('configureStore', () => {
       expect(typeof store.injectedReducers).toBe('object');
     });
   });
-});
 
-describe('injectedEpics', () => {
-  it('should contain an object for sagas', () => {
-    expect(typeof store.injectedEpics).toBe('object');
+  describe('injectedEpics', () => {
+    it('should contain an object for sagas', () => {
+      expect(typeof store.injectedEpics).toBe('object');
+    });
   });
 });
 

@@ -6,13 +6,19 @@
 
 import { fromJS } from 'immutable';
 import {
+  {{#if wantEpic}}
+  GET_{{ upperCase defaultAction }},
+  {{/if}}
   DEFAULT_ACTION,
 } from './constants';
-
 const initialState = fromJS({});
 
 function {{ camelCase name }}Reducer(state = initialState, action) {
   switch (action.type) {
+    {{#if wantEpic}}
+    case GET_{{ upperCase defaultAction }}.FULFILLED:
+      return state.set('{{ camelCase defaultAction }}', action.data);
+    {{/if}}
     case DEFAULT_ACTION:
       return state;
     default:

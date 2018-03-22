@@ -34,7 +34,15 @@ module.exports = {
     name: 'wantActionsAndReducer',
     default: true,
     message: 'Do you want an actions/constants/selectors/reducer tuple for this container?',
-  }, {
+  },
+  {
+    when(response) { return response.wantActionsAndReducer; },
+    type: 'input',
+    name: 'defaultAction',
+    message: 'What default action should be created',
+    default: 'default',
+  },
+  {
     type: 'confirm',
     name: 'wantEpic',
     default: true,
@@ -155,7 +163,6 @@ module.exports = {
         abortOnFail: true,
       });
     }
-
 
 
     if (data.wantLoadable) {

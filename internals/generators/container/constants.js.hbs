@@ -1,7 +1,9 @@
-/*
- *
- * {{ properCase name }} constants
- *
- */
+{{#if wantEpic}}
+import generateActions from 'utils/generateActions';
+{{/if}}
+const COMPONENT = 'APP/{{ upperCase name }}';
 
-export const DEFAULT_ACTION = 'app/{{ properCase name }}/DEFAULT_ACTION';
+export const DEFAULT_ACTION = `${COMPONENT}/DEFAULT_ACTION`
+{{#if wantEpic}}
+export const GET_{{ upperCase defaultAction }} = generateActions(COMPONENT, 'GET_{{ upperCase defaultAction }}');
+{{/if}}

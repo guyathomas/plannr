@@ -4,12 +4,17 @@
  *
  */
 
+{{#if wantEpic}}
 import {
+  GET_{{ upperCase defaultAction }},
   DEFAULT_ACTION,
 } from './constants';
 
-export function defaultAction() {
-  return {
-    type: DEFAULT_ACTION,
-  };
-}
+export const get{{ properCase defaultAction }} = () => ({ type: GET_{{ upperCase defaultAction }}.REQUESTED });
+
+export const fulfillGet{{ properCase defaultAction }} = (data) => ({ type: GET_{{ upperCase defaultAction }}.FULFILLED, data });
+
+export const failGet{{ properCase defaultAction }} = (error) => ({ type: GET_{{ upperCase defaultAction }}.FAILED, error });
+{{/if}}
+
+export const defaultAction = () => ({ type: DEFAULT_ACTION });

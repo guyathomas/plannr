@@ -1,16 +1,15 @@
 import { Observable } from 'rxjs';
 import { combineEpics } from 'redux-observable';
-import { GET_DEFAULT_ACTION } from './constants';
-import { fulfillDefaultAction, failDefaultAction } from 'actions';
+import { GET_{{ upperCase defaultAction }} } from './constants';
+import { fulfillGet{{ properCase defaultAction }}, failGet{{ properCase defaultAction }} } from './actions';
 
-const getDefaultEpic = action$ =>
-  action$.ofType( GET_DEFAULT_ACTION )
+const get{{ properCase defaultAction }}Epic = action$ =>
+  action$.ofType( GET_{{ upperCase defaultAction }} )
     .mergeMap( () =>
       Observable.ajax( 'https://api.github.com/users/guyathomas/repos' )
-        .map( ({ data }) => fulfillDefaultAction( data ) )
-        .takeUntil( action$.ofType( ROUTE_CHANGED )
-        .catch( error => Observable.of( failDefaultAction( error ) ) ) );
+        .map( ({ data }) => fulfillGet{{ properCase defaultAction }}( data ) )
+        .catch( error => Observable.of( failGet{{ properCase defaultAction }}( error ) ) ) );
 
 export default combineEpics(
-  getDefaultEpic
+  get{{ properCase defaultAction }}Epic
 );
