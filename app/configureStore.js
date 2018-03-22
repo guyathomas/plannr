@@ -2,17 +2,20 @@
  * Create the store with dynamic reducers
  */
 
+import 'rxjs/add/operator/mergeMap';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import { createEpicMiddleware } from 'redux-observable';
-import createReducer, { rootEpic } from './reducers';
+import createReducer from './reducers';
+import epic$ from './epics';
 
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
   // 1. epicMiddleware: Makes redux-observables work
   // 2. routerMiddleware: Syncs the location/URL path to the state
+  const rootEpic = (action$, store) => epic$.mergeMap((epic) => epic(action$, store));
   const epicMiddleware = createEpicMiddleware(rootEpic);
   const middlewares = [
     epicMiddleware,
@@ -45,12 +48,17 @@ export default function configureStore(initialState = {}, history) {
 
   // Extensions
   store.injectedReducers = {}; // Reducer registry
+  store.replaceEpic = epicMiddleware.replaceEpic;
+  store.injectedEpics = {}; // Epic registry
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       store.replaceReducer(createReducer(store.injectedReducers));
+    });
+    module.hot.accept('./epics', () => {
+      store.replaceEpic(epic$);
     });
   }
 

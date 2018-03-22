@@ -18,10 +18,17 @@ import { createStructuredSelector } from 'reselect';
 {{/if}}
 import { compose } from 'redux';
 
+{{#if wantEpic}}
+  import injectEpic from 'utils/injectEpic';
+{{/if}}
+
 {{#if wantActionsAndReducer}}
 import injectReducer from 'utils/injectReducer';
 import makeSelect{{properCase name}} from './selectors';
 import reducer from './reducer';
+{{/if}}
+{{#if wantEpic}}
+  import epic from './epic';
 {{/if}}
 {{#if wantMessages}}
 import messages from './messages';
@@ -68,10 +75,18 @@ const withReducer = injectReducer({ key: '{{ camelCase name }}', reducer });
 {{else}}
 const withConnect = connect(null, mapDispatchToProps);
 {{/if}}
+{{#if wantEpic}}
+  const withEpic = injectEpic({ key: '{{ camelCase name }}', epic });
+{{/if}}
+
 
 export default compose(
 {{#if wantActionsAndReducer}}
   withReducer,
 {{/if}}
-  withConnect,
+{{#if wantEpic}}
+  withEpic,
+{{/if}}
+withConnect,
 )({{ properCase name }});
+

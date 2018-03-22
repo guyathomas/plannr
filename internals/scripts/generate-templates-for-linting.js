@@ -54,6 +54,7 @@ containerGen.runActions({
   type: 'React.PureComponent',
   wantHeaders: true,
   wantActionsAndReducer: true,
+  wantEpics: true,
   wantMessages: true,
   wantLoadable: true,
 })
@@ -66,6 +67,7 @@ containerGen.runActions({
   type: 'React.Component',
   wantHeaders: true,
   wantActionsAndReducer: true,
+  wantEpics: true,
   wantMessages: true,
   wantLoadable: true,
 })
@@ -78,6 +80,7 @@ containerGen.runActions({
   type: 'Stateless Function',
   wantHeaders: true,
   wantActionsAndReducer: true,
+  wantEpics: true,
   wantMessages: true,
   wantLoadable: true,
 })

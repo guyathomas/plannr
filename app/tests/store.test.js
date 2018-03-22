@@ -19,6 +19,13 @@ describe('configureStore', () => {
   });
 });
 
+describe('injectedEpics', () => {
+  it('should contain an object for sagas', () => {
+    expect(typeof store.injectedEpics).toBe('object');
+  });
+});
+
+
 describe('configureStore params', () => {
   it('should call window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__', () => {
     /* eslint-disable no-underscore-dangle */

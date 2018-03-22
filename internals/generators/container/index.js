@@ -36,6 +36,11 @@ module.exports = {
     message: 'Do you want an actions/constants/selectors/reducer tuple for this container?',
   }, {
     type: 'confirm',
+    name: 'wantEpic',
+    default: true,
+    message: 'Do you want epics for asynchronous flows? (e.g. fetching data)',
+  }, {
+    type: 'confirm',
     name: 'wantMessages',
     default: true,
     message: 'Do you want i18n messages (i.e. will this component use text)?',
@@ -134,6 +139,24 @@ module.exports = {
         abortOnFail: true,
       });
     }
+
+    // Epics
+    if (data.wantEpic) {
+      actions.push({
+        type: 'add',
+        path: '../../app/containers/{{properCase name}}/epic.js',
+        templateFile: './container/epic.js.hbs',
+        abortOnFail: true,
+      });
+      actions.push({
+        type: 'add',
+        path: '../../app/containers/{{properCase name}}/tests/epic.test.js',
+        templateFile: './container/epic.test.js.hbs',
+        abortOnFail: true,
+      });
+    }
+
+
 
     if (data.wantLoadable) {
       actions.push({
