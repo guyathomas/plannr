@@ -1,0 +1,29 @@
+machine:
+  python:
+    version: 2.7.3
+  services:
+    - docker
+
+dependencies:
+  pre:
+    # - pip install awscli
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+    # App
+    - docker build --rm=false -t stolemyusername/engauge-app:latest ./app
+    - docker push stolemyusername/engauge-app
+    # Landing
+    - docker build --rm=false -t stolemyusername/engauge-landing:latest ./landing
+    - docker push stolemyusername/engauge-landing
+    # Screenshot
+    - docker build --rm=false -t stolemyusername/engauge-screenshot:latest ./screenshot
+    - docker push stolemyusername/engauge-screenshot
+    # Nginx
+    - docker build --rm=false -t stolemyusername/engauge-nginx:latest ./nginx
+    - docker push stolemyusername/engauge-nginx
+test:
+  override:
+    - echo "test"
+
+deployment:
+  elasticbeanstalk:
+    branch: master

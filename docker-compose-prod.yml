@@ -1,0 +1,77 @@
+version: '3.1'
+
+services:
+  nginx:
+    image: stolemyusername/engauge-nginx:arm
+    depends_on:
+      - 'app'
+      - 'landing'
+    deploy:
+      labels:
+        - "traefik.docker.network=traefik-net"
+        - "traefik.frontend.rule=Host:www.engauge.xyz,engauge.xyz,app.engauge.xyz"
+        - "traefik.frontend.entryPoints=http,https"
+        - "traefik.port=80"
+        - "traefik.enable=true"
+      placement:
+        constraints:
+         - node.labels.arch == arm
+    networks:
+      - traefik-net
+      - engauge-net
+  app:
+    image: stolemyusername/engauge-app:arm
+    env_file: .env
+    depends_on:
+      - 'database'
+    deploy:
+      placement:
+        constraints:
+         - node.labels.arch == arm
+    networks:
+      - engauge-net
+  landing:
+    image: stolemyusername/engauge-landing:arm
+    deploy:
+      placement:
+        constraints:
+         - node.labels.arch == arm
+    networks:
+      - engauge-net
+  screenshot:
+    image: stolemyusername/engauge-screenshot:latest
+    env_file: .env
+    deploy:
+      placement:
+        constraints:
+         - node.labels.arch == x86
+    networks:
+      - engauge-net
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+  database:
+    image: tobi312/rpi-postgresql:9.6
+    env_file: .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - engauge-db:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints:
+         - node.labels.arch == arm
+    networks:
+      - engauge-net
+volumes:
+  engauge-db:
+networks:
+  engauge-net:
+    external: true
+  traefik-net:
+    external: true
+secrets:
+  AWS_ACCESS_KEY_ID:
+    external: true
+  AWS_SECRET_ACCESS_KEY:
+    external: true
